@@ -1,4 +1,5 @@
 package edu.grinnell.csc207.listlab;
+import java.util.Arrays;
 
 /**
  * An array-based implementation of the list ADT.
@@ -9,15 +10,33 @@ public class ArrayList {
      * 
      * @param value the value to add to the end of the list
      */
-    public void add(int value) {
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+
+    private int[] data;
+    private int size;
+
+    public ArrayList(){
+        data = new int[1];
     }
 
+
+
+    public void add(int value) {
+        //throw new UnsupportedOperationException("Unimplemented method 'add'");
+        ensureCapacity();
+        data[size] = value;
+        size++;
+    }
+
+    private void ensureCapacity(){
+        if(size==data.length){
+            data = Arrays.copyOf(data, data.length * 2);
+        }
+    }
     /**
      * @return the number of elements in the list
      */
     public int size() {
-        throw new UnsupportedOperationException("Unimplemented method 'size'");
+        return size;
     }
 
     /**
@@ -25,7 +44,11 @@ public class ArrayList {
      * @return the value at the specified <code>index</code>
      */
     public int get(int index) {
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+
+        if(index < 0 || index >= size){
+            throw new IllegalArgumentException();
+        }
+        return data[index];
     }
 
     /**
@@ -35,6 +58,20 @@ public class ArrayList {
      * @return the element at <code>index</code>
      */
     public int remove(int index) {
-        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+        if(index == size -1){
+            size--;
+            return data[size];
+        } else if (index < 0 || index >= size){
+            throw new IllegalArgumentException();
+        } else if(size == 0){
+            return 0;
+        } else {
+            int ret = data[index];
+            for(int i = index; i < size-1; i++){
+                data[i] = data[i+1];
+            }
+            size--;
+            return ret;
+        }
     }
 }
